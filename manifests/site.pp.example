@@ -11,9 +11,9 @@
 # If you are behind a proxy you may choose not to use our ftp distribution, and
 # instead try our http distribution location. Note the http location is not
 # a permanent location and may change at any time.
-$location 		= "ftp://ftpeng.cisco.com/openstack/cisco"
+#$location 		= "ftp://ftpeng.cisco.com/openstack/cisco"
 # Alternate, uncomment this one, and comment out the one above
-#$location		= "http://128.107.252.163/openstack/cisco"
+$location		= "http://128.107.252.163/openstack/cisco"
 ########### Build Node (Cobbler, Puppet Master, NTP) ######
 # Change the following to the host name you have given your build node
 $build_node_name        = "build-server"
@@ -83,16 +83,16 @@ $controller_node_internal      = $controller_node_address
 #
 # Specify which interface in each node is the API Interface
 # This is also known as the Management Interface
-$public_interface        	= 'eth0'
+$public_interface        	= 'eth2'
 # Define the interface used for vm networking connectivity when nova-network is being used.
 # Quantum does not require this value, so using eth0 will typically be fine. 
-$private_interface		= 'eth0'
+$private_interface		= 'eth2'
 # Specify the interface used for external connectivity such as floating IPs (only in network/controller node)
-$external_interface	 	= 'eth1'
+$external_interface	 	= 'eth3'
 
 # Select the drive on which Ubuntu and OpenStack will be installed in each node. Current assumption is
 # that all nodes will be installed on the same device name
-$install_drive           = '/dev/sdc'
+$install_drive           = '/dev/sda'
 
 ########### OpenStack Service Credentials ############
 # This block of parameters is used to change the user names and passwords used by the services which
