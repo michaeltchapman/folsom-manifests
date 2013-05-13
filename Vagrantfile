@@ -19,11 +19,11 @@ Vagrant::Config.run do |config|
     cache_config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
     cache_config.vm.network :hostonly, "192.168.242.99"
     cache_config.vm.network :hostonly, "10.2.3.99"
-    cache_config.vm.network :hostonly, "10.3.3.99"
+    cache_config.vm.network :bridged, :bridge => "en0: Ethernet"
     cache_config.vm.customize ['modifyvm', :id, '--name', 'cache']
     cache_config.vm.host_name = 'cache'
     cache_config.vm.provision :shell do |shell|
-      shell.inline = "apt-get update; apt-get install apt-cacher-ng -y; cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update;sysctl -w net.ipv4.ip_forward=1;#iptables –A FORWARD –i eth0 –o eth2 –j ACCEPT;iptables –A FORWARD –i eth2 –o eth0 –j ACCEPT;iptables –t nat –A POSTROUTING –o eth0 –j MASQUERADE"
+      shell.inline = "apt-get update; apt-get install apt-cacher-ng -y; cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update;sysctl -w net.ipv4.ip_forward=1;"#iptables –A FORWARD –i eth0 –o eth2 –j ACCEPT;iptables –A FORWARD –i eth2 –o eth0 –j ACCEPT;iptables –t nat –A POSTROUTING –o eth0 –j MASQUERADE"
     end
   end
 
