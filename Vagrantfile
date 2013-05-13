@@ -21,9 +21,10 @@ Vagrant::Config.run do |config|
     cache_config.vm.network :hostonly, "10.2.3.99"
     cache_config.vm.network :bridged, :bridge => "en0: Ethernet"
     cache_config.vm.customize ['modifyvm', :id, '--name', 'cache']
+    cache_config.vm.customize ["modifyvm", :id, "--memory", 512]
     cache_config.vm.host_name = 'cache'
     cache_config.vm.provision :shell do |shell|
-      shell.inline = "apt-get update; apt-get install apt-cacher-ng -y; cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update;sysctl -w net.ipv4.ip_forward=1;"#iptables –A FORWARD –i eth0 –o eth2 –j ACCEPT;iptables –A FORWARD –i eth2 –o eth0 –j ACCEPT;iptables –t nat –A POSTROUTING –o eth0 –j MASQUERADE"
+      shell.inline = "service apt-cacher-ng restart; apt-get update; apt-get install apt-cacher-ng -y; cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update;sysctl -w net.ipv4.ip_forward=1;"#iptables –A FORWARD –i eth0 –o eth2 –j ACCEPT;iptables –A FORWARD –i eth2 –o eth0 –j ACCEPT;iptables –t nat –A POSTROUTING –o eth0 –j MASQUERADE"
     end
   end
 
@@ -36,6 +37,7 @@ Vagrant::Config.run do |config|
     build_config.vm.network :hostonly, "192.168.242.100"
     build_config.vm.network :hostonly, "10.2.3.100"
     build_config.vm.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+    build_config.vm.customize ["modifyvm", :id, "--memory", 512]
     build_config.vm.network :hostonly, "10.3.3.100"
     build_config.vm.provision :shell do |shell|
       shell.inline = "cp /vagrant/dhclient.conf /etc/dhcp;cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update; dhclient -r eth0 && dhclient eth0; apt-get install -y git vim puppet curl;cp /vagrant/templates/* /etc/puppet/templates/"
@@ -55,6 +57,7 @@ Vagrant::Config.run do |config|
   # Openstack control server
   config.vm.define :control_pxe do |control_config|
     control_config.vm.customize(['modifyvm', :id ,'--nicbootprio2','1'])
+    control_config.vm.customize ["modifyvm", :id, "--memory", 512]
     control_config.vm.box = 'blank'
     control_config.vm.boot_mode = 'gui'
     control_config.ssh.port = 2727
@@ -67,12 +70,12 @@ Vagrant::Config.run do |config|
     control_config.vm.box = "precise64"
     control_config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
     control_config.vm.customize ["modifyvm", :id, "--name", 'control-server']
-    control_config.vm.customize ["modifyvm", :id, "--memory", 1024]
     control_config.vm.host_name = 'control-server'
     # you cannot boot this at the same time as the control_pxe b/c they have the same ip address
     control_config.vm.network :hostonly, "192.168.242.10"
     control_config.vm.network :hostonly, "10.2.3.10"
     control_config.vm.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+    control_config.vm.customize ["modifyvm", :id, "--memory", 512]
     control_config.vm.network :hostonly, "10.3.3.10"
     control_config.vm.provision :shell do |shell|
       shell.inline = 'echo "192.168.242.100 coe-build coe-build.domain.name" >> /etc/hosts;cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update;apt-get install ubuntu-cloud-keyring'
@@ -101,7 +104,7 @@ Vagrant::Config.run do |config|
     compute_config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
     compute_config.vm.customize ["modifyvm", :id, "--name", 'compute-server02']
     compute_config.vm.host_name = 'compute-server02'
-    compute_config.vm.customize ["modifyvm", :id, "--memory", 2512]
+    compute_config.vm.customize ["modifyvm", :id, "--memory", 1024]
     compute_config.vm.network :hostonly, "192.168.242.21"
     compute_config.vm.network :hostonly, "10.2.3.21"
     compute_config.vm.network :hostonly, "10.3.3.21"
