@@ -40,7 +40,7 @@ Vagrant::Config.run do |config|
     build_config.vm.customize ["modifyvm", :id, "--memory", 512]
     build_config.vm.network :hostonly, "10.3.3.100"
     build_config.vm.provision :shell do |shell|
-      shell.inline = "cp /vagrant/dhclient.conf /etc/dhcp;cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update; dhclient -r eth0 && dhclient eth0; apt-get install -y git vim puppet curl;cp /vagrant/templates/* /etc/puppet/templates/"
+      shell.inline = "cp /vagrant/dhclient.conf /etc/dhcp;cp /vagrant/01apt-cacher-ng-proxy /etc/apt/apt.conf.d; apt-get update; dhclient -r eth0 && dhclient eth0; apt-get install -y git vim puppet curl;cp /vagrant/templates/* /etc/puppet/templates/;"# apt-get install -y cobbler; cobbler-ubuntu-import -m http://mirror.optus.net/ubuntu/ precise-x86_64"
     end
     # now run puppet to install the build server
     build_config.vm.provision(:puppet, :pp_path => "/etc/puppet") do |puppet|
