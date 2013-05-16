@@ -45,7 +45,7 @@ Vagrant::Config.run do |config|
     end  
     
     # Enable this section to pull the ubuntu image from a different mirror
-    #build.config.vm.provision : shell do |shell|
+    #build.config.vm.provision :shell do |shell|
     #  shell.inline = "apt-get install -y cobbler; cobbler-ubuntu-import -m http://mirror.optus.net/ubuntu/ precise-x86_64"
     #end
 
