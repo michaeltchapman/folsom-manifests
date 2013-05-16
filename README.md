@@ -42,12 +42,19 @@ Next, bring up the build server:
 
     vagrant up build
 
-Now, bring up the blank boxes so that they can PXE boot against the master
+There are now two options: boot using the Ubuntu 12.04 base box, or boot using a blank box and install using PXE. The former is better for quickly testing openstack, the latter is more useful for simulating the install of a bare metal server. If you choose to use PXE, you will need to install the virtualbox extension pack https://www.virtualbox.org/wiki/Downloads
 
-    vagrant up control
+To bring up nodes using the ubuntu 12.04 base box:
 
-    vagrant up compute
+    vagrant up control_basevm
 
+    vagrant up compute_basevm
+
+To bring up nodes using blank boxes and PXE boot them:
+
+    vagrant up control_pxe
+
+    vagrant up compute_pxe
 
 Now, you have created a fully functional openstack environment, now have a look at some services:
 
